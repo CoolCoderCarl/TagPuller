@@ -1,3 +1,4 @@
+import logger
 import tkinter
 import get_info_db
 import get_info_internet
@@ -10,6 +11,8 @@ def click_download():
     """
     download = 'Result from Internet {}'.format(get_info_internet.dict_create(input_text.get()))
     lbl_status.configure(text=download)
+    logger.log_init()
+    logger.make_logs(input_text.get())
 
 
 def click_from_db():

@@ -1,11 +1,12 @@
 import logging
 
 # Class ?
+# Start init once
 log_path = './'
 
 
 def log_init():
-    logging.basicConfig(filename=str(log_path) + 'tag_puller.log',
+    logging.basicConfig(filename=str(log_path) + 'tags_puller.log',
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
 

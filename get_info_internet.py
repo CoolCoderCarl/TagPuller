@@ -7,6 +7,16 @@ tags_list = ["html", "header", "body"]
 tag_dict = {}
 
 
+def check_url(original_url: str) -> str:
+    """
+    Parse original URL
+    :param original_url:
+    :return:
+    """
+
+    pass
+
+
 def pull_web_page(url: str, tag_from_list: str) -> list:
     """
     Pull and return the web page tags and content
@@ -14,7 +24,7 @@ def pull_web_page(url: str, tag_from_list: str) -> list:
     :param url:
     :return:
     """
-    response = requests.get("http://www."+url)
+    response = requests.get("https://www."+url)
     soup = bs4.BeautifulSoup(response.text, "lxml")
     quotes = soup.find_all(tag_from_list)
 
