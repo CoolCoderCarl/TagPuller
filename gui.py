@@ -1,5 +1,7 @@
+import logger
 import tkinter
 import get_info_db
+import get_info_internet
 
 
 def click_download():
@@ -7,9 +9,10 @@ def click_download():
     Click to download from Internet
     :return:
     """
-    # pass
-    download = 'Result from Internet {}'.format(input_text.get())
+    download = 'Result from Internet {}'.format(get_info_internet.dict_create(input_text.get()))
     lbl_status.configure(text=download)
+    logger.log_init()
+    logger.make_logs(input_text.get())
 
 
 def click_from_db():
@@ -17,22 +20,21 @@ def click_from_db():
     Click to get from database
     :return:
     """
-    # pass
     lbl_status.configure(text="Get from database")
     lbl_tags_counter_value.configure(text=get_info_db.test_show_data())
 
 
 # Window initialization and properties
 window = tkinter.Tk()
-window.title('HTML tags gatherer')
-window.geometry('500x500')
+window.title('Tags Puller 2022')
+window.geometry('600x600')
 window.minsize(width=350, height=350)
 
 
 # Frames
-frame_input = tkinter.Frame(window, width=500, height=250, bg='blue')
-frame_tags = tkinter.Frame(window, width=250, height=250, bg='yellow')
-frame_status = tkinter.Frame(window, width=250, height=250, bg='red')
+frame_input = tkinter.Frame(window, width=600, height=300, bg='blue')
+frame_tags = tkinter.Frame(window, width=300, height=300, bg='yellow')
+frame_status = tkinter.Frame(window, width=300, height=300, bg='red')
 
 frame_input.place(relx=0, rely=0, relwidth=1, relheight=0.5)
 frame_tags.place(relx=0, rely=0.5, relwidth=0.5, relheight=0.5)
