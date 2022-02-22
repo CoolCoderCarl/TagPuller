@@ -1,5 +1,7 @@
+import re
 import bs4
 import requests
+from urllib.parse import urlparse
 
 
 # Convert to class ?
@@ -7,14 +9,44 @@ tags_list = ["html", "header", "body"]
 tag_dict = {}
 
 
-def check_url(original_url: str) -> str:
+def is_valid_url(url_from_ui: str) -> bool:
+    regex = re.compile(
+        r'^https?://'
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'
+        r'localhost|'
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+        r'(?::\d+)?'
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+    return True if regex.search(url_from_ui) else False
+
+
+def is_url_getable(url_from_ui: str):
     """
-    Parse original URL
+    Try to get 200 HTTP code from the valid URL
+    :param url_from_ui:
+    :return:
+    """
+    if is_valid_url(url_from_ui):
+        try:
+            requests.get(url_from_ui)
+        except requests.exceptions.ConnectionError as conerr:
+            return conerr
+    return True
+
+
+def get_domen(original_url: str) -> str:
+    """
+    Parse original URL and return domen
     :param original_url:
     :return:
     """
+    urlparse("scheme://netloc/path;parameters?query#fragment")
+    parsed_url = urlparse(original_url)
 
-    pass
+    domen = parsed_url.hostname.split('.')[1]
+
+    return domen
 
 
 def pull_web_page(url: str, tag_from_list: str) -> list:
@@ -24,7 +56,7 @@ def pull_web_page(url: str, tag_from_list: str) -> list:
     :param url:
     :return:
     """
-    response = requests.get("https://www."+url)
+    response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text, "lxml")
     quotes = soup.find_all(tag_from_list)
 
