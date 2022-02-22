@@ -1,5 +1,6 @@
 import logger
 import tkinter
+import requests
 import get_info_db
 import get_info_internet
 
@@ -9,10 +10,13 @@ def click_download():
     Click to download from Internet
     :return:
     """
-    download = 'Result from Internet {}'.format(get_info_internet.dict_create(input_text.get()))
-    lbl_status.configure(text=download)
-    logger.log_init()
-    logger.make_logs(input_text.get())
+    try:
+        download = 'Result from Internet {}'.format(get_info_internet.dict_create(input_text.get()))
+        lbl_status.configure(text=download)
+        logger.log_init()
+        logger.make_logs(get_info_internet.get_domen(input_text.get()))
+    except requests.exceptions.MissingSchema as miserr:
+        lbl_status.configure(text=miserr)
 
 
 def click_from_db():
