@@ -39,3 +39,6 @@ def dict_create(url_from_ui: str) -> dict:
 
 
 # print(dict_create("google.com"))
+
+if __name__ == '__main__':
+    pass
