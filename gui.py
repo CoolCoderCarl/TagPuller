@@ -1,8 +1,21 @@
 import logger
 import tkinter
 import requests
+import save_to_db
 import get_info_db
 import get_info_internet
+import date_formation as df
+
+# https://www.google.com
+# https://www.google.ru
+# https://www.yahoo.com
+# https://www.yandex.ru
+
+logger.log_init()  # Put to the final file
+if save_to_db.is_db_exist():
+    pass
+else:
+    save_to_db.init_db()  # Put to the final file
 
 
 def click_download():
@@ -10,13 +23,23 @@ def click_download():
     Click to download from Internet
     :return:
     """
+    url_from_ui = input_text.get()
     try:
-        download = 'Result from Internet {}'.format(get_info_internet.dict_create(input_text.get()))
+        download = 'Result from Internet {}'.format(get_info_internet.dict_create(url_from_ui))
         lbl_status.configure(text=download)
-        logger.log_init()
-        logger.make_logs(get_info_internet.get_domen(input_text.get()))
-    except requests.exceptions.MissingSchema as miserr:
-        lbl_status.configure(text=miserr)
+
+        logger.make_logs(get_info_internet.get_domen(url_from_ui))
+
+        if save_to_db.is_in_db(url_from_ui):
+            save_to_db.insert_into_db(domen=get_info_internet.get_domen(url_from_ui),
+                                      url_from_ui=url_from_ui,
+                                      timestamp=df.get_timestamp(df.get_y(), df.get_m(), df.get_d()),
+                                      tags_data=str(get_info_internet.dict_create(url_from_ui)))
+        else:
+            click_from_db()
+    except (requests.exceptions.MissingSchema,
+            requests.exceptions.ConnectionError) as err:
+        lbl_status.configure(text=err)
 
 
 def click_from_db():
@@ -24,8 +47,9 @@ def click_from_db():
     Click to get from database
     :return:
     """
+    url_from_ui = input_text.get()
     lbl_status.configure(text="Get from database")
-    lbl_tags_counter_value.configure(text=get_info_db.test_show_data())
+    lbl_tags_counter_value.configure(text=get_info_db.get_data_from_db(get_info_internet.get_domen(url_from_ui)))
 
 
 # Window initialization and properties
@@ -36,9 +60,9 @@ window.minsize(width=350, height=350)
 
 
 # Frames
-frame_input = tkinter.Frame(window, width=600, height=300, bg='blue')
-frame_tags = tkinter.Frame(window, width=300, height=300, bg='yellow')
-frame_status = tkinter.Frame(window, width=300, height=300, bg='red')
+frame_input = tkinter.Frame(window, width=600, height=300)
+frame_tags = tkinter.Frame(window, width=300, height=300)
+frame_status = tkinter.Frame(window, width=300, height=300)
 
 frame_input.place(relx=0, rely=0, relwidth=1, relheight=0.5)
 frame_tags.place(relx=0, rely=0.5, relwidth=0.5, relheight=0.5)
