@@ -34,9 +34,9 @@ def is_db_empty():
         test_db.cursor().execute(query)
         data = test_db.cursor().fetchall()
         if len(data) == 0:
-            return False
-        else:
             return True
+        else:
+            return False
 
 
 def is_in_db(url_from_ui: str):
@@ -46,7 +46,9 @@ def is_in_db(url_from_ui: str):
     :return:
     """
     try:
-        if is_db_empty():
+        # if is_db_empty():
+        #     return False
+        # else:
             data = []
             with sqlite3.connect(db_name) as test_db:
                 query = """
@@ -55,11 +57,9 @@ def is_in_db(url_from_ui: str):
                 for row in test_db.cursor().execute(query):
                     data = row
                     if data:
-                        return False
-                    else:
                         return True
-        else:
-            return False
+                    else:
+                        return False
     except sqlite3.OperationalError as sqlerr:
         return sqlerr
 

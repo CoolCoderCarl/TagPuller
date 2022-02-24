@@ -25,18 +25,17 @@ def click_download():
     """
     url_from_ui = input_text.get()
     try:
-        download = 'Result from Internet {}'.format(get_info_internet.dict_create(url_from_ui))
-        lbl_status.configure(text=download)
-
         logger.make_logs(get_info_internet.get_domen(url_from_ui))
 
         if save_to_db.is_in_db(url_from_ui):
+            click_from_db()
+        else:
+            download = 'Result from Internet {}'.format(get_info_internet.dict_create(url_from_ui))
+            lbl_status.configure(text=download)
             save_to_db.insert_into_db(domen=get_info_internet.get_domen(url_from_ui),
                                       url_from_ui=url_from_ui,
                                       timestamp=df.get_timestamp(df.get_y(), df.get_m(), df.get_d()),
                                       tags_data=str(get_info_internet.dict_create(url_from_ui)))
-        else:
-            click_from_db()
     except (requests.exceptions.MissingSchema,
             requests.exceptions.ConnectionError) as err:
         lbl_status.configure(text=err)
