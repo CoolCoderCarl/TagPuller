@@ -9,7 +9,7 @@ def is_db_exist() -> bool:
     :return:
     """
     try:
-        f = open("test.db")
+        f = open(db_name)
         if f:
             return True
         else:
@@ -21,7 +21,7 @@ def is_db_exist() -> bool:
 def init_db():
     init_query = """
                     CREATE TABLE test_table
-                    (domen TEXT, url_from_ui TEXT, timestamp INTEGER, tags_data TEXT)
+                    (domain TEXT, url_from_ui TEXT, timestamp INTEGER, tags_data TEXT)
                 """
 
     with sqlite3.connect(db_name) as test_db:
@@ -64,10 +64,10 @@ def is_in_db(url_from_ui: str):
         return sqlerr
 
 
-def insert_into_db(domen: str, url_from_ui: str, timestamp: str, tags_data):
+def insert_into_db(domain: str, url_from_ui: str, timestamp: str, tags_data):
     """
     Insert into db information about tags which got from UI
-    :param domen:
+    :param domain:
     :param url_from_ui:
     :param timestamp:
     :param tags_data:
@@ -76,14 +76,14 @@ def insert_into_db(domen: str, url_from_ui: str, timestamp: str, tags_data):
     try:
         if is_in_db(url_from_ui):
             insert_data = [
-                (domen,
+                (domain,
                  url_from_ui,
                  timestamp,
                  tags_data)
             ]
 
             query = """
-                        INSERT INTO test_table(domen, url_from_ui, timestamp, tags_data) VALUES (?,?,?,?);
+                        INSERT INTO test_table(domain, url_from_ui, timestamp, tags_data) VALUES (?,?,?,?);
                     """
 
             with sqlite3.connect(db_name) as test_db:

@@ -25,14 +25,14 @@ def click_download():
     """
     url_from_ui = input_text.get()
     try:
-        logger.make_logs(get_info_internet.get_domen(url_from_ui))
+        logger.make_logs(get_info_internet.get_domain(url_from_ui))
 
         if save_to_db.is_in_db(url_from_ui):
             click_from_db()
         else:
             download = 'Result from Internet {}'.format(get_info_internet.dict_create(url_from_ui))
             lbl_status.configure(text=download)
-            save_to_db.insert_into_db(domen=get_info_internet.get_domen(url_from_ui),
+            save_to_db.insert_into_db(domain=get_info_internet.get_domain(url_from_ui),
                                       url_from_ui=url_from_ui,
                                       timestamp=df.get_timestamp(df.get_y(), df.get_m(), df.get_d()),
                                       tags_data=str(get_info_internet.dict_create(url_from_ui)))
@@ -48,7 +48,7 @@ def click_from_db():
     """
     url_from_ui = input_text.get()
     lbl_status.configure(text="Get from database")
-    lbl_tags_counter_value.configure(text=get_info_db.get_data_from_db(get_info_internet.get_domen(url_from_ui)))
+    lbl_tags_counter_value.configure(text=get_info_db.get_data_from_db(get_info_internet.get_domain(url_from_ui)))
 
 
 # Window initialization and properties

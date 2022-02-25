@@ -35,18 +35,18 @@ def is_url_getable(url_from_ui: str):
     return True
 
 
-def get_domen(original_url: str) -> str:
+def get_domain(original_url: str) -> str:
     """
-    Parse original URL and return domen
+    Parse original URL and return domain
     :param original_url:
     :return:
     """
     urlparse("scheme://netloc/path;parameters?query#fragment")
     parsed_url = urlparse(original_url)
 
-    domen = parsed_url.hostname.split('.')[1]
+    domain = parsed_url.hostname.split('.')[1]
 
-    return domen
+    return domain
 
 
 def pull_web_page(url: str, tag_from_list: str) -> list:

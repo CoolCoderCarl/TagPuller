@@ -18,7 +18,7 @@ def get_d():
 
 
 def get_timestamp(y, m, d):
-    return datetime.datetime.timestamp(datetime.datetime(y, m, d))
+    return datetime.datetime(y, m, d)
 
 
 def get_date(timestamp):
@@ -26,4 +26,6 @@ def get_date(timestamp):
 
 
 if __name__ == '__main__':
+    # print(get_timestamp(get_y(), get_m(), get_d()))
+    # print(type(get_timestamp(get_y(), get_m(), get_d())))
     pass
