@@ -24,7 +24,8 @@ def session():
     # with resources.path(
     #     "test.db"
     # ) as sqlite_filepath:
-    engine = create_engine(f"sqlite:///test.db")
+    engine = create_engine("sqlite:///test.db")
+    Base.metadata.create_all(engine)
     Session = sessionmaker()
     Session.configure(bind=engine)
     session = Session()
@@ -44,5 +45,5 @@ def add_new_tags(session, domain, url_from_ui, tags_data):
 if __name__ == '__main__':
     session()
     add_new_tags(session(), domain="google", url_from_ui="www.google.com", tags_data="data_of_tags")
-    pass
+    # pass
 
